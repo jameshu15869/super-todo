@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: super-todo-postgres
+spec:
+  selector:
+    matchLabels:
+      app: super-todo-postgres
+  replicas: 1
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: super-todo-postgres
+    spec:
+      containers:
+      - image: throwawayqwerty1963/super-todo-postgres
+        name: super-todo-postgres
+        ports:
+          - containerPort: 5432
+        env:
+          - name: POSTGRES_PASSWORD
+            value: "password"

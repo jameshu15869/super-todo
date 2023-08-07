@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-gateway-deployment
+spec:
+  selector:
+    matchLabels:
+      app: service-gateway
+  replicas: 1
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: service-gateway
+    spec:
+      containers:
+        - image: throwawayqwerty1963/supertodo-service-gateway
+          name: service-gateway
+          ports:
+            - containerPort: 4000
+          env:
+          - name: USER_ENDPOINT
+            value: "service-user-svc:4001"
+          - name: TODO_ENDPOINT
+            value: "service-todo-svc:4002"
+          - name: COMBINE_ENDPOINT
+            value: "service-combine-svc:4003"
+          - name: GRPC_TIMEOUT
+            value: "2"
+          - name: CHAN_BUFFER
+            value: "10"
+          - name: REDIS_HOST
+            value: "redis-svc"
+          - name: REDIS_PORT
+            value: "6379"
+          - name: REDIS_PASSWORD
+            value: ""
+          - name: REDIS_DB
+            value: "0"

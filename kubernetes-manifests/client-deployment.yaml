@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  selector:
+    matchLabels:
+      app: client
+  replicas: 1
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - image: throwawayqwerty1963/supertodo-client
+          name: client
+          ports:
+            - containerPort: 3000
+          env:
+          - name: GATEWAY_API_ENDPOINT
+            value: "http://service-gateway-svc:4000"

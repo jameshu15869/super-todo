@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: super-todo-redis
+  labels:
+    app: super-todo-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: super-todo-redis
+  template:
+    metadata:
+      labels:
+        app: super-todo-redis
+    spec:
+      containers:
+      - image: redis
+        name: super-todo-redis
+        ports:
+        - containerPort: 6379

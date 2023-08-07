@@ -1,0 +1,134 @@
+syntax = "proto3";
+package supertodo;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "supertodo/pb";
+
+service UserService {
+    rpc PingHealth(google.protobuf.Empty) returns (Health) {}
+    rpc GetAllUsers(google.protobuf.Empty) returns (Users) {}
+    rpc GetUserById(SingleUserIDRequest) returns (User) {}
+    rpc GetUsersByMultipleIds(MultipleUserIDRequest) returns (Users) {}
+    rpc UpdateUserById(User) returns (User) {}
+    rpc AddUser(User) returns (User) {} 
+    rpc DeleteUser(SingleUserIDRequest) returns (User) {}
+}
+
+service TodoService {
+    rpc PingHealth(google.protobuf.Empty) returns (Health) {}
+    rpc GetAllTodos(google.protobuf.Empty) returns (Todos) {}
+    rpc GetTodoById(SingleTodoIDRequest) returns (Todo) {}
+    rpc GetTodosByMultipleIds(MultipleTodoIDRequest) returns(Todos) {}
+    rpc UpdateTodoById(Todo) returns (Todo) {}
+    rpc AddTodo(Todo) returns (Todo) {}
+    rpc DeleteTodo(SingleTodoIDRequest) returns (Todo) {}
+}
+
+service CombineService {
+    rpc PingHealth(google.protobuf.Empty) returns (Health) {}
+    rpc GetTodosFromUserId(SingleUserIDRequest) returns (TodosFromUserIdResponse) {}
+    rpc GetUsersFromTodoId(SingleTodoIDRequest) returns (UsersFromTodoIdResponse) {}
+    rpc GetAllCombined(google.protobuf.Empty) returns (MultipleCombined) {}
+    rpc AddCombined(CombinedRequest) returns (Combined) {}
+    rpc AddCombinedArray(CombinedArrayRequest) returns (MultipleCombined) {}
+    rpc DeleteCombined(CombinedRequest) returns (Combined) {}
+    rpc DeleteTodo(SingleTodoIDRequest) returns (MultipleCombined) {}
+    rpc DeleteUser(SingleUserIDRequest) returns (MultipleCombined) {}
+    rpc UpdateTodo(CombinedArrayRequest) returns (MultipleCombined) {}
+}
+
+message JsonError {
+    string name = 1;
+    string message = 2;
+    string timestamp = 3;
+}
+
+message Health {
+    string status = 1;
+}
+
+message User {
+    int32 id = 1;
+    string username = 2;
+}
+
+message UserWithTodos {
+    User user = 1;
+    Todos todos = 2;
+}
+
+message PutUser {
+    string username = 1;
+}
+
+message Users {
+    repeated User users = 1;
+}
+
+message SingleUserIDRequest {
+    int32 user_id = 1;
+}
+
+message Todo {
+    int32 id = 1;
+    string title = 2;
+    string todo_date = 3;
+    string body = 4;
+}
+
+message TodoWithUsers {
+    Todo todo = 1;
+    Users users = 2;
+}
+
+message PutTodo {
+    string title = 1;
+    string todo_date = 2;
+    string body = 3;
+    repeated int32 user_ids = 4;
+}
+
+message Todos {
+    repeated Todo todos = 1;
+}
+
+message Combined {
+    int32 id = 1;
+    int32 user_id = 2;
+    int32 todo_id = 3;
+}
+
+message SingleTodoIDRequest {
+    int32 todo_id = 1;
+}
+
+message MultipleUserIDRequest {
+    repeated int32 user_ids = 1;
+}
+
+message MultipleTodoIDRequest {
+    repeated int32 todo_ids = 1;
+}
+
+message TodosFromUserIdResponse {
+    repeated int32 todo_ids = 1;
+}
+
+message UsersFromTodoIdResponse {
+    repeated int32 user_ids = 1;
+}
+
+message CombinedRequest {
+    int32 user_id = 1;
+    int32 todo_id = 2;
+}
+
+message MultipleCombined {
+    repeated Combined combines = 1;
+}
+
+message CombinedArrayRequest {
+    int32 todo_id = 1;
+    repeated int32 user_ids = 2;
+}

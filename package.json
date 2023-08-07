@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "class-variance-authority": "^0.6.0",
+    "clsx": "^1.2.1",
+    "lucide-react": "^0.233.0",
+    "tailwind-merge": "^1.13.0",
+    "tailwindcss-animate": "^1.0.5"
+  }
+}

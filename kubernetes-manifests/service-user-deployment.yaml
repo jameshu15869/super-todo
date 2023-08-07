@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-user-deployment
+spec:
+  selector:
+    matchLabels:
+      app: service-user
+  replicas: 1
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: service-user
+    spec:
+      containers:
+        - image: throwawayqwerty1963/supertodo-service-user
+          name: service-user
+          ports:
+            - containerPort: 4001
+          env:
+          - name: POSTGRES_USER
+            value: "postgres"
+          - name: POSTGRES_HOST
+            value: "postgres-svc"
+          - name: POSTGRES_PASSWORD
+            value: "password"
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_DBNAME
+            value: "supertodo_users"
+          - name: POSTGRES_SSLMODE
+            value: "disable"
+          - name: REDIS_HOST
+            value: "redis-svc"
+          - name: REDIS_PORT
+            value: "6379"
+          - name: REDIS_PASSWORD
+            value: ""
+          - name: REDIS_DB
+            value: "0"
+          - name: REDIS_TIMEOUT
+            value: "5"
+          - name: CACHE_DURATION
+            value: "10"
+

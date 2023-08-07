@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-ingress
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - kind: Rule
+    match: Host(`supertodo.172.25.57.251.nip.io`)
+    services:
+    - name: client-svc
+      port: 3000
+  tls:
+    secretName: supertodo-secret
