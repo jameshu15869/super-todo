@@ -1,5 +1,7 @@
 # Super Todo
 
+Try it out now at https://super-todo.app!
+
 This project is a dramatically overengineered todo app I created to practice React, Go, gRPC, microservice design, containerization, and Kubernetes deployments.
 
 ## Deployment
